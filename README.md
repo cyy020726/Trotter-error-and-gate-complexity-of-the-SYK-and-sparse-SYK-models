@@ -6,8 +6,8 @@ There are four simulation files (Simulation_Dense_n.py, Simulation_Dense_t.py, S
 For data analysis, you can find four analysis files (Analysis_Dense_n.py, Analysis_Dense_t.py, Analysis_Sparse_n.py, Analysis_Sparse_t.py). Each of them performs data analysis to the corresponding experiment. The '_n' analysis files compute the error ratio between the observed (normalized) Trotter error and our theoretical estimate (see paper). The '_t' analysis files plot the observed Trotter error and the theoretical bound with respect to time in two separate plots. The scaling exponent of the theoretical bounds is extracted by fitting a line ax+b through the log-log plot. 
 
 Please make sure to have the following packages installed (via pip)
-numpy
-scipy
-pandas
-matplotlib
-tqdm
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - tqdm
