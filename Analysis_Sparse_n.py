@@ -125,7 +125,7 @@ J_E = 1.0
 n_set = []  # dummy variable to hold the n values from data extraction
 k_set = [2,3,4,5,6]
 t = 10.0
-l = 2                 
+l = 1                
 r = 100000               
 p = 2    
 

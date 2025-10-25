@@ -35,9 +35,9 @@ N_VALUES = [n for n in range(N_START, N_END + 1, N_STEP)]
 
 # Physics / algorithm parameters (tune carefully!)
 J_E = 1.0
-k = 4
+k = 2
 t = 10.0
-l = 2                 # 1 or 2 (Strang)
+l = 1                 # 1 or 2 (Strang)
 r = 100000                # keep modest for demo; large values can be very heavy
 p = 2                 # Schatten p; fast path for p==2
 

@@ -39,7 +39,7 @@ T_VALUES = np.linspace(T_START, T_END, T_POINTS).tolist()
 # Physics / algorithm parameters
 J_E = 1.0
 k = 2
-l = 2                 # 1 or 2 (Strang)
+l = 1                 # 1 or 2 (Strang)
 r = 100000            # WARNING: large r is heavy
 p = 2                 # Schatten p; fast path for p==2
 

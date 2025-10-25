@@ -85,13 +85,13 @@ def Extract_Data(database):
     # keep only finite values
     log_t = [log_t_raw[i] for i in range(len(log_t_raw)) if np.isfinite(log_E_raw[i])]
     log_E = [log_E_raw[i] for i in range(len(log_E_raw)) if np.isfinite(log_E_raw[i])]
-
+    t_val = [np.exp(each) for each in log_t]
     # # fit the log values using log_fit
     # fit_params, _ = curve_fit(log_fit, log_t, log_E, bounds=[(0, -np.inf), (np.inf, np.inf)], maxfev=50000)
     # a,b = fit_params
     # fit_data = [log_fit(each, a,b) for each in log_t]
 
-    return np.array(t), k, np.array(log_t), np.array(log_E)
+    return np.array(t_val), k, np.array(log_t), np.array(log_E)
 
 def Theory_Upperbound(n,k,t,l,r,p,J_E):
     Gamma = comb(n,k)
@@ -137,7 +137,7 @@ J_E = 1.0
 n = 10
 k_set = [2,3,4,5,6]
 t_set = []  # dummy variable to hold the t values from data extraction
-l = 2                 
+l = 1              
 r = 100000                
 p = 2    
 
@@ -169,7 +169,7 @@ plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 20})
 # plt.xticks(n)
 
-plt.xlabel(r'$\log_e(t)$')
+plt.xlabel(r'$t$')
 ylabel = r'$\log_e(\langle|||e^{iHt} - S_{var_l}(t/r)^r|||_{\overline{var_p}}\rangle)$'
 ylabel = ylabel.replace('var_l', str(l))
 ylabel = ylabel.replace('var_p', str(p))
@@ -187,68 +187,42 @@ for DATABASE in DATABASES:
     label = r'$k={var_k}$'
     label = label.replace('var_k', str(k))
 
-    # plt.plot(log_n, fit_data, color=COLOR_dict[k], linestyle=':', label=label)
-
     # load the t values to t_set
     t_set = t
 
     # load the data points to plotter
     plotter.append((k, log_t, log_E, label))
 
-LABEL = True
-label_ref = r'reference $\sim {var_l}\log_e(t)$'
-label_ref = label_ref.replace('var_l', str(l+1))
+def ref_line(x,x_f,y_f,l):
+    return (l * x) - (l * x_f) + y_f
+
+def cost(x_vals, y_vals, l):
+    x_f = x_vals[-1]
+    y_f = y_vals[-1]
+    return sum([(y_vals[i] - (ref_line(x_vals[i], x_f, y_f, l)))**2 for i in range(len(x_vals))])
+
+def reference_exponent(data):
+    L = np.linspace(l-1, l+2, 1000)
+    x_vals = data[1]
+    y_vals = data[2]
+    costs = [cost(x_vals, y_vals, L_i) for L_i in L]
+    L_min = L[costs.index(min(costs))]
+    return L_min
+
 for each in plotter:
-    # plt.plot(each[1], each[3], color=COLOR_dict[each[0]], linestyle=':', label=each[4])
-    if LABEL:
-        plt.plot(each[1], [(3 * i) - (3 * each[1][-1]) + each[2][-1] for i in each[1]], 
-                color='red', linestyle=':', label=label_ref)
-        LABEL = False
-    else:
-        plt.plot(each[1], [(3 * i) - (3 * each[1][-1]) + each[2][-1] for i in each[1]], 
+    label_ref = r': $\sim t^{{var_l}}$'
+    l_ref = reference_exponent(each)
+    label_ref = label_ref.replace('var_l', str(round(l_ref,3)))
+    
+    plt.plot(t_set, [ref_line(i, each[1][-1], each[2][-1], l_ref) for i in each[1]], 
                 color='red', linestyle=':')
-    plt.scatter(each[1], each[2], color=COLOR_dict[each[0]],label=each[3])
+    plt.scatter(t_set, each[2], color=COLOR_dict[each[0]],label=each[3]+label_ref)
 plt.legend()
 plt.show()
+
 
 
 # ------------------------- Plot the theoretical prediction -------
-
-plt.figure(figsize=(10,6))
-plt.rcParams['text.usetex'] = True
-plt.rcParams.update({'font.size': 20})
-# plt.xticks(n)
-
-plt.xlabel(r'$\log_e(t)$')
-ylabel = r'$\log_e\left(\overline{\Delta}_{var_l}\right)$'
-ylabel = ylabel.replace('var_l', str(l))
-plt.ylabel(ylabel)
-
-title = r'Theoretical upper bound $\overline{\Delta}_l$ for $l=var_l$ and $p=var_p$'
-title = title.replace('var_l', str(l))
-title = title.replace('var_p', str(p))
-plt.title(title)
-
-plotter = []
-for k in k_set:
-    logt, pred, fit_data, a, b = Prediction(n,k,t_set,l,r,p,J_E)
-    # plt.scatter(log_n, log_E, color=COLOR_dict[k])
-    label = r'$k={var_k}$: ${var_a}\log(t) + {var_b}$'
-    label = label.replace('var_k', str(k))
-    label = label.replace('var_a', str(round(a,3)))
-    label = label.replace('var_b', str(round(b,3)))
-    # plt.plot(log_n, fit_data, color=COLOR_dict[k], linestyle=':', label=label)
-
-    # load the data points to plotter
-    plotter.append((k, logt, pred, fit_data, label))
-
-for each in plotter:
-    plt.scatter(each[1], each[2], color=COLOR_dict[each[0]])
-    plt.plot(each[1], each[3], color=COLOR_dict[each[0]], linestyle=':', label=each[4])
-
-plt.legend()
-plt.show()
-
 
 plt.figure(figsize=(10,6))
 plt.rcParams['text.usetex'] = True
@@ -271,7 +245,7 @@ for k in k_set:
     t = [np.exp(each) for each in logt]
 
     
-    label = r'$k={var_k}$: exponent$\sim{var_a}$'
+    label = r'$k={var_k}$: $\sim t^{{var_a}}$'
     label = label.replace('var_k', str(k))
     label = label.replace('var_a', str(round(a,3)))
 
