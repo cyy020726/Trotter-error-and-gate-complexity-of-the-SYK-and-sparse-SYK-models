@@ -110,7 +110,9 @@ def Theory_Upperbound(n,k,t,l,r,p,J_E):
                 Qnk += comb(n - k, k-s) * comb(k,s)
     # this is the upper bound of the higher-order average Trotter error
     # we have ommited the l-dependent factor beta(l), since we only care about the scaling
-    head = (Gamma * np.sqrt(p) * sigma * np.sqrt(p_B) * t / np.sqrt(Qnk))
+    Upsilon = 2 * 5**((l/2) - 1)
+    betal = (l+3)**(5/2) * (l+2)**(2*(l+2)) * Upsilon**(l+3) * (l+2)**(3*(l+2)/2) / (l+1)
+    head = betal * (Gamma * np.sqrt(p) * sigma * np.sqrt(p_B) * t / np.sqrt(Qnk))
     body1 = (np.sqrt(p) * sigma * np.sqrt(p_B * Qnk) * t / r)**(l)
     body2 = Gamma * (np.sqrt(p) * sigma * np.sqrt(p_B * Qnk) * t / r)**(l+1)
 
@@ -137,7 +139,7 @@ J_E = 1.0
 n = 10
 k_set = [2,3,4,5,6]
 t_set = []  # dummy variable to hold the t values from data extraction
-l = 1              
+l = 2              
 r = 100000                
 p = 2    
 
@@ -230,11 +232,11 @@ plt.rcParams.update({'font.size': 20})
 # plt.xticks(n)
 
 plt.xlabel(r'$t$')
-ylabel = r'$\log_e\left(\overline{\Delta}_{var_l}\right)$'
+ylabel = r'$\log_e\left(\Delta_{var_l}^{\mathrm{sparse}}\right)$'
 ylabel = ylabel.replace('var_l', str(l))
 plt.ylabel(ylabel)
 
-title = r'Theoretical upper bound $\overline{\Delta}_l$ for $l=var_l$ and $p=var_p$'
+title = r'Theoretical upper bound $\Delta_l^{\mathrm{sparse}}$ for $l=var_l$ and $p=var_p$'
 title = title.replace('var_l', str(l))
 title = title.replace('var_p', str(p))
 plt.title(title)

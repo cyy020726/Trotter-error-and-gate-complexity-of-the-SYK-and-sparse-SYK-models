@@ -50,8 +50,7 @@ def Theory_Upperbound(n,k,t,l,r,p,J_E):
                 if s % 2 == 0:
                     Qnk += comb(n - k, k-s) * comb(k,s)
         # this is the upper bound of the higher-order Trotter error
-        # we have ommited the l-dependent factor D(l), since we only care about the scaling
-        Cl = Upsilon**(l+3) * np.sqrt(l+3) * (l+2)**(9 * ((l+2)/2) - 1) / (l+1)
+        Cl = Upsilon**(l+3) * np.sqrt(l+3) * (l+2)**(3 * (l+2) - 1) / (l+1)
         if Qnk == 0:
             return 0
         else:
@@ -132,7 +131,7 @@ J_E = 1.0
 n_set = []  # dummy variable to hold the n values from data extraction
 k_set = [2,3,4,5,6]
 t = 10.0
-l = 1                 
+l = 2                 
 r = 100000               
 p = 2    
 

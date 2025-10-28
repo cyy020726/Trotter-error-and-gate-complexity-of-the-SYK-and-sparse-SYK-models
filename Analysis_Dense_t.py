@@ -109,8 +109,7 @@ def Theory_Upperbound(n,k,t,l,r,p,J_E):
                 if s % 2 == 0:
                     Qnk += comb(n - k, k-s) * comb(k,s)
         # this is the upper bound of the higher-order Trotter error
-        # we have ommited the l-dependent factor D(l), since we only care about the scaling
-        Cl = Upsilon**(l+3) * np.sqrt(l+3) * ((l+2)**(9 * ((l+2)/2) - 1)) / (l+1)
+        Cl = Upsilon**(l+3) * np.sqrt(l+3) * (l+2)**(3 * (l+2) - 1) / (l+1)
         
         S = Cl * np.sqrt(Cp) * sigma * Qnk**(-1/2) * t * ( 
             comb(n,k) * ( np.sqrt(Cp) * sigma * np.sqrt(Qnk) * t / r)**(l) + 
@@ -135,7 +134,7 @@ J_E = 1.0
 n = 10
 k_set = [2,3,4,5,6]
 t_set = []  # dummy variable to hold the t values from data extraction
-l = 1                 
+l = 2                 
 r = 100000              
 p = 2    
 
@@ -227,11 +226,11 @@ plt.rcParams.update({'font.size': 20})
 # plt.xticks(n)
 
 plt.xlabel(r'$t$')
-ylabel = r'$\log_e\left(\Delta_{var_l}\right)$'
+ylabel = r'$\log_e\left(\Delta_{var_l}^{\mathrm{dense}}\right)$'
 ylabel = ylabel.replace('var_l', str(l))
 plt.ylabel(ylabel)
 
-title = r'Theoretical upper bound $\Delta_l$ for $l=var_l$ and $p=var_p$'
+title = r'Theoretical upper bound $\Delta_l^{\mathrm{dense}}$ for $l=var_l$ and $p=var_p$'
 title = title.replace('var_l', str(l))
 title = title.replace('var_p', str(p))
 plt.title(title)
