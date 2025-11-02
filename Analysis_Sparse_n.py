@@ -124,7 +124,7 @@ def Extract_Data(database):
 # ------------------------- Configuration -------------------------
 J_E = 1.0
 n_set = []  # dummy variable to hold the n values from data extraction
-k_set = [2,3,4,5,6]
+k_set = [2,3,4]
 t = 10.0
 l = 2                
 r = 100000               
@@ -152,16 +152,17 @@ for i in range(len(k_set)):
 DATABASES = [f"DATABASE/DATA_SPARSE_n_sweep(k={k},t={t},l={l},r={r},p={p},J={round(J_E,3)}).txt" for k in k_set]
 
 # ------------------------- Plot the observed error ---------------
-plt.figure(figsize=(10,6))
+plt.figure(figsize=(12,6))
 plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 20})
 # plt.xticks(n)
 
-plt.xlabel(r'$n$')
+label_fontsize = 25
+plt.xlabel(r'$n$', fontsize = label_fontsize)
 ylabel = r'$\log\left(\eta^{\mathrm{sparse}}_{l,p}\right)$'
 ylabel = ylabel.replace('var_l', str(l))
 ylabel = ylabel.replace('var_p', str(p))
-plt.ylabel(ylabel)
+plt.ylabel(ylabel, fontsize = label_fontsize)
 
 title = r'Error ratio $\eta^{\mathrm{sparse}}_{l,p}$ for $l=var_l$ and $p=var_p$'
 title = title.replace('var_l', str(l))

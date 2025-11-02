@@ -137,7 +137,7 @@ def Prediction(n,k,t_set,l,r,p,J_E):
 # ------------------------- Configuration -------------------------
 J_E = 1.0
 n = 10
-k_set = [2,3,4,5,6]
+k_set = [2,3,4]
 t_set = []  # dummy variable to hold the t values from data extraction
 l = 2              
 r = 100000                
@@ -171,11 +171,12 @@ plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 20})
 # plt.xticks(n)
 
-plt.xlabel(r'$t$')
+label_fontsize = 25
+plt.xlabel(r'$t$', fontsize = label_fontsize)
 ylabel = r'$\log_e(\langle|||e^{iHt} - S_{var_l}(t/r)^r|||_{\overline{var_p}}\rangle)$'
 ylabel = ylabel.replace('var_l', str(l))
 ylabel = ylabel.replace('var_p', str(p))
-plt.ylabel(ylabel)
+plt.ylabel(ylabel, fontsize = label_fontsize)
 
 title = r'Observed average normalized Trotter Error for $l=var_l$ and $p=var_p$'
 title = title.replace('var_l', str(l))
@@ -231,10 +232,10 @@ plt.rcParams['text.usetex'] = True
 plt.rcParams.update({'font.size': 20})
 # plt.xticks(n)
 
-plt.xlabel(r'$t$')
+plt.xlabel(r'$t$', fontsize = label_fontsize)
 ylabel = r'$\log_e\left(\Delta_{var_l}^{\mathrm{sparse}}\right)$'
 ylabel = ylabel.replace('var_l', str(l))
-plt.ylabel(ylabel)
+plt.ylabel(ylabel, fontsize = label_fontsize)
 
 title = r'Theoretical upper bound $\Delta_l^{\mathrm{sparse}}$ for $l=var_l$ and $p=var_p$'
 title = title.replace('var_l', str(l))
